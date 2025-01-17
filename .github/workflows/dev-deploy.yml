@@ -1,0 +1,35 @@
+name: Distribute to GitHub Pages
+on: 
+  push:
+    branches:
+      - main
+      - develop
+      - develop/*
+permissions:
+  contents: write
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: build
+        run: |
+          npm install
+          npm run build
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          path: gh-pages
+          ref: gh-pages
+      - name: copy artifacts
+        run: |
+          cp -r dist/* gh-pages/${{ github.ref_name }}
+      - name: push gh-pages
+        working-directory: gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Generated from ${{ github.ref }} (${{ github.sha }})"
+          git push
