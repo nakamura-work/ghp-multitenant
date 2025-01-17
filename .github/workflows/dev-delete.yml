@@ -17,7 +17,7 @@ jobs:
       - name: remove artifacts
         working-directory: gh-pages
         run: |
-          git rm -rf docs/${{ github.ref_name }}
+          git rm -rf docs/${{ github.event.ref }}
       - name: push gh-pages
         working-directory: gh-pages
         run: |
