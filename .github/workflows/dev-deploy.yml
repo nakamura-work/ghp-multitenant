@@ -1,6 +1,8 @@
 name: Distribute to GitHub Pages
 on: 
   push:
+    paths:
+      - 'app/**'
     branches:
       - main
       - develop
@@ -14,6 +16,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: build
+        working-directory: app
         env:
           DOCUMENT_BASE: /${{ github.event.repository.name }}/${{ github.ref_name }}
         run: |
@@ -27,7 +30,7 @@ jobs:
       - name: copy artifacts
         run: |
           mkdir -p gh-pages/docs/${{ github.ref_name }}
-          cp -r dist/* gh-pages/docs/${{ github.ref_name }}
+          cp -r app/dist/* gh-pages/docs/${{ github.ref_name }}
       - name: push gh-pages
         working-directory: gh-pages
         run: |
