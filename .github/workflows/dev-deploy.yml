@@ -24,6 +24,7 @@ jobs:
           ref: gh-pages
       - name: copy artifacts
         run: |
+          mkdir -p gh-pages/${{ github.ref_name }}
           cp -r dist/* gh-pages/${{ github.ref_name }}
       - name: push gh-pages
         working-directory: gh-pages
