@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
       - name: build
         env:
-          DOCUMENT_BASE: ${{ github.repository }}/${{ github.ref_name }}
+          DOCUMENT_BASE: /${{ github.event.repository.name }}/${{ github.ref_name }}
         run: |
           npm install
           npm run build
