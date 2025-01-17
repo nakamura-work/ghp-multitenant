@@ -1,0 +1,26 @@
+name: Remove distributed doc on deleted branch
+on:
+  delete:
+    branches:
+      - develop/*
+jobs:
+  remove:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          path: gh-pages
+          ref: gh-pages
+      - name: remove artifacts
+        working-directory: gh-pages
+        run: |
+          git rm -rf docs/${{ github.ref_name }}
+      - name: push gh-pages
+        working-directory: gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Removed from ${{ github.ref }} (${{ github.sha }})"
+          git push
